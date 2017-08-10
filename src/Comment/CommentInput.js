@@ -1,6 +1,15 @@
-import React, { PropTypes,Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 
 class CommentInput extends Component {
+
+    static defaultProps = {
+
+    }
+
+    static propTypes = {
+        onSubmit: PropTypes.func
+    }
+
     constructor() {
         super();
         this.state = {
@@ -9,15 +18,27 @@ class CommentInput extends Component {
         }
     }
 
-    static propTypes = {
-        onSubmit: PropTypes.func
+    componentWillMount() {
+        this._loadUsername();
     }
 
-    changeInput(event) {
-        console.log(event);
-        this.setState({
-            username: event.target.value
-        });
+    componentDidMount() {
+        this.textarea.focus();
+    }
+
+    _saveUsername(username) {
+        localStorage.setItem('username', username);
+    }
+
+    _loadUsername() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            this.setState({ username: username });
+        }
+    }
+
+    blurInput(event) {
+        this._saveUsername(event.target.value);
     }
 
     handleContentChange(event) {
@@ -26,16 +47,33 @@ class CommentInput extends Component {
         });
     }
 
-    handleSubmit(event) {
-        if (this.props.onSubmit) {
-            const {username, content} = this.state;
-            this.props.onSubmit({username,content});
-        }
+
+    changeInput(event) {
+        console.log(event);
+        this.setState({
+            username: event.target.value
+        });
     }
 
-    componentDidMount() {
-        this.textarea.focus();
+    handleSubmit(event) {
+        if (this.props.onSubmit) {
+            const { username, content } = this.state;
+            const createTime = +new Date();
+            this.props.onSubmit({ username, content, createTime: createTime});
+        }
+        this.setState({
+            content: ''
+        });
     }
+
+
+    renderHeader() {}
+
+
+    renderContent(){}
+
+
+    renderFooter(){}
 
     render() {
         return (
@@ -43,13 +81,13 @@ class CommentInput extends Component {
                 <div className='comment-field'>
                     <span className='comment-field-name'>用户名：</span>
                     <div className='comment-field-input'>
-                        <input  onChange={this.changeInput.bind(this)} value={this.state.username}/>
+                        <input onBlur={this.blurInput.bind(this)} onChange={this.changeInput.bind(this)} value={this.state.username} />
                     </div>
                 </div>
                 <div className='comment-field'>
                     <span className='comment-field-name'>评论内容：</span>
                     <div className='comment-field-input'>
-                        <textarea ref={(textarea) => this.textarea = textarea}  onChange={this.handleContentChange.bind(this)} value={this.state.content}/>
+                        <textarea ref={(textarea) => this.textarea = textarea} onChange={this.handleContentChange.bind(this)} value={this.state.content} />
                     </div>
                 </div>
                 <div className='comment-field-button'>
