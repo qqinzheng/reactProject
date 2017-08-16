@@ -4,7 +4,9 @@ class Comment extends Component {
 
     // 决定值的类型
     static propTypes = {
-        comment: PropTypes.object.isRequired
+        comment: PropTypes.object.isRequired,
+        onDeleteComment: PropTypes.func.isRequired,
+        index: PropTypes.number
     };
 
     constructor() {
@@ -38,6 +40,10 @@ class Comment extends Component {
         }
     }
 
+    handleDeleteCommand() {
+        this.props.onDeleteComment(this.props.index);
+    }
+
     render() {
         return (
             <div className='comment'>
@@ -47,6 +53,9 @@ class Comment extends Component {
                 <p>{this.props.comment.content}</p>
                 <span className='comment-createdtime'>
                     {this.state.timeString}
+                </span>
+                <span className='comment-delete' onClick={this.handleDeleteCommand.bind(this)}>
+                    删除
                 </span>
             </div>
         );

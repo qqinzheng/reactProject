@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes,Component } from 'react';
 import CommentList from './CommentList';
 import CommentInput from './CommentInput';
 
@@ -7,7 +7,18 @@ class CommentApp extends Component {
     constructor() {
         super();
         this.state = {
-            listInfo: []
+            listInfo: [],
+            themeColor: ''
+        }
+    }
+
+    static childContextTypes = {
+        themeColor: PropTypes.string
+    }
+
+    getChildContext() {
+        return {
+            themeColor: this.state.themeColor
         }
     }
 
@@ -19,6 +30,9 @@ class CommentApp extends Component {
                 listInfo: comments
             });
         }
+        this.setState({
+            themeColor: 'red'
+        })
     }
 
     _saveComments(comments) {
@@ -36,11 +50,19 @@ class CommentApp extends Component {
         this._saveComments(this.state.listInfo);
     }
 
+    handleOnDeleteComment(index) {
+        this.state.listInfo.splice(index,1);
+        this.setState({
+            listInfo:  this.state.listInfo
+        });
+         localStorage.setItem('comments', JSON.stringify( this.state.listInfo))
+    }
+
     render() {
         return (
             <div className='wrapper'>
                 <CommentInput onSubmit={this.handleOnSubmit.bind(this)} />
-                <CommentList listInfo={this.state.listInfo} />
+                <CommentList onDeleteComment={this.handleOnDeleteComment.bind(this)} listInfo={this.state.listInfo} />
             </div>
         );
     }

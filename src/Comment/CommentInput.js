@@ -10,6 +10,10 @@ class CommentInput extends Component {
         onSubmit: PropTypes.func
     }
 
+    static contextTypes = {
+        themeColor: PropTypes.string
+    } 
+
     constructor() {
         super();
         this.state = {
@@ -20,10 +24,12 @@ class CommentInput extends Component {
 
     componentWillMount() {
         this._loadUsername();
+        this.context.themeColor = 'blue';
     }
 
     componentDidMount() {
         this.textarea.focus();
+        console.log(this);
     }
 
     _saveUsername(username) {
@@ -79,7 +85,7 @@ class CommentInput extends Component {
         return (
             <div className='comment-input'>
                 <div className='comment-field'>
-                    <span className='comment-field-name'>用户名：</span>
+                    <span className='comment-field-name' style={{color: this.context.themeColor}}>用户名：</span>
                     <div className='comment-field-input'>
                         <input onBlur={this.blurInput.bind(this)} onChange={this.changeInput.bind(this)} value={this.state.username} />
                     </div>

@@ -7,6 +7,7 @@ import Index from './List';
 import PercentageApp from './PercentConverter/PercentageApp';
 import CommentApp from './Comment/CommentApp';
 import {defaultPost} from './Post';
+import ThemeIndex from './ThemeSwitch/Index';
 import registerServiceWorker from './registerServiceWorker';
 
 class Header extends Component {
@@ -98,5 +99,5 @@ console.log(React.createElement(PercentageApp,null));
 
 const Abc = defaultPost({color: 'red'});
 
-ReactDOM.render(<CommentApp />,document.getElementById('root')); //<Header likeText='qin' unlikedText='zheng' />  Post content='aaa'><Title / </Post>,<Abc style={{ color: 'blue', fontSize: '13px' }} />
+ReactDOM.render(<ThemeIndex />,document.getElementById('root')); //<Header likeText='qin' unlikedText='zheng' />  Post content='aaa'><Title / </Post>,<Abc style={{ color: 'blue', fontSize: '13px' }} />
 registerServiceWorker();

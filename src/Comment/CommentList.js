@@ -1,7 +1,23 @@
-import React, {Component} from 'react';
+import React, { PropTypes,Component } from 'react';
 import Comment from './Comment';
 
 class CommentList extends Component {
+
+    static propTypes = {
+        onDeleteComment: PropTypes.func.isRequired
+    }
+
+    static contextTypes = {
+        themeColor: PropTypes.string
+    } 
+
+    componentDidMount() {
+        console.log(this);
+    }
+
+    handleDeleteComment(index) {
+        this.props.onDeleteComment(index);
+    }
 
     render() {
         const comments = this.props.listInfo;
@@ -9,7 +25,7 @@ class CommentList extends Component {
             <div>
                  {comments.map((comment, i) => {
                     return (
-                        <Comment key={i} comment= {comment}/>
+                        <Comment onDeleteComment={this.handleDeleteComment.bind(this)} key={i} index={i} comment= {comment}/>
                     )
                 })}
             </div>
